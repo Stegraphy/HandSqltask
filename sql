@@ -144,6 +144,9 @@ and s.STUDENT_NO = g.STUDENT_NO,g.CORSE_NO = c.COURSE_NO;
 
  
 15、查询所有课程成绩前三名的按照升序排在最开头，其余数据排序保持默认（7分）,显示（学号、成绩）
-SELECT STUDENT_NO ,CORE
-from 
+SELECT s.STUDENT_NO ,c.CORE
+from hand_student s,hand_student_core c
+where s.STUDENT_NO = c.STUDENT_NO 
+group by c.COURSE_NO
+order by  CORE desc;
 
