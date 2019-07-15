@@ -88,7 +88,36 @@ where STUDENT_AGE = (select min(STUDENT_AGE) from hand_student where
 (STUDENT_AGE)<2019-1992);
 
 6、统计列出矩阵类型各分数段人数，横轴为分数段[100-85]、[85-70]、[70-60]、[<60]，纵轴为课程号、课程名称
-
+SELECT SC.COURSE_NO,
+        C.COURSE_NAME,
+        SUM(CASE
+              WHEN SC.CORE BETWEEN 85 AND 100 THEN
+               1
+              ELSE
+               0
+            END) AS "[100-85]",
+        SUM(CASE
+              WHEN SC.CORE BETWEEN 70 AND 85 THEN
+               1
+              ELSE
+               0
+            END) AS "[85-70]",
+        SUM(CASE
+              WHEN SC.CORE BETWEEN 60 AND 70 THEN
+               1
+              ELSE
+               0
+            END) AS "[70-60]",
+        SUM(CASE
+              WHEN SC.CORE < 60 then
+               1
+              ELSE
+               0
+            END) AS "[<60]"
+   FROM HAND_STUDENT_CORE SC, 
+        HAND_COURSE C
+  WHERE SC.COURSE_NO = C.COURSE_NO
+  GROUP BY SC.COURSE_NO, C.COURSE_NAME; 
  
 7、查询各科成绩前三名的记录:(不考虑成绩并列情况)，显示（学号、课程号、分数）
 SELECT STUDENT_NO,COURSE_NO,CORE
