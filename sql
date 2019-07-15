@@ -120,11 +120,13 @@ SELECT SC.COURSE_NO,
   GROUP BY SC.COURSE_NO, C.COURSE_NAME; 
  
 7、查询各科成绩前三名的记录:(不考虑成绩并列情况)，显示（学号、课程号、分数）
-SELECT STUDENT_NO,COURSE_NO,CORE
-from hand_student_core
-where CORE = 
-top(select CORE from hand_student_core
-GROUP BY  COURSE_NO)
+SELECT * FROM (
+  SELECT SC.STUDENT_NO SNO,
+  SC.COURSE_NO CNO,
+  SC.CORE SCORE,
+  ROW_NUMBER() OVER(PARTITION BY SC.COURSE_NO ORDER BY SC.CORE DESC) RN
+  FROM HAND_STUDENT_CORE SC) A
+WHERE A.RN <= 3
  
 8、查询选修“谌燕”老师所授课程的学生中每科成绩最高的学生，显示（学号、姓名、课程名称、成绩）
 SELECT COURSE_NO,max(CORE),
